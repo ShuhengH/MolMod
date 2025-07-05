@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Profile - AIDD Drug Discovery and Innovation Team</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+
+
+
+<link rel="icon" type="image/svg+xml" href="/static/img/logo_phone.svg">
+
+
+<link rel="apple-touch-icon" href="/static/img/logo_phone.svg">
+
+
+<link rel="icon" type="image/png" sizes="192x192" href="/static/img/logo_phone.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/static/img/logo_phone.svg">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/static/img/logo_phone.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/img/logo_phone.svg">
+
+
+<link rel="manifest" href="/static/img/site.webmanifest">
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #ffffff;
+    }
+
+    /* 页面容器 */
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* 团队介绍部分 */
+    .team-overview {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      padding: 3rem 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      margin-top: 5rem;
+    }
+
+    .team-overview::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #577590, #43aa8b, #f8961e);
+    }
+
+    .team-overview h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1.8rem;
+      color: #212529;
+      position: relative;
+      display: inline-block;
+    }
+
+    .team-overview h2::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #577590, #f8961e);
+      border-radius: 1.5px;
+    }
+
+    .team-overview p {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #495057;
+      margin-bottom: 1rem;
+    }
+
+    /* 导师卡片样式 */
+    .professor-section {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .professor-card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      padding: 3rem 2.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .professor-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #f94144, #f8961e, #43aa8b);
+    }
+
+    .professor-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .professor-image {
+      margin-bottom: 2rem;
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 2.2rem;
+    }
+
+    .professor-card img {
+      width: 190px;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid white;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.5s ease;
+      position: relative;
+      z-index: 1;
+      object-position: center 5%;
+    }
+
+    .professor-image::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f94144, #f8961e, #43aa8b, #577590);
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: rotate 6s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: translateX(-50%) rotate(0deg);
+      }
+      100% {
+        transform: translateX(-50%) rotate(360deg);
+      }
+    }
+
+    .professor-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .professor-card h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #212529;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .professor-card .position {
+      font-size: 1.2rem;
+      color: #6c757d;
+      margin-bottom: 1.8rem;
+      position: relative;
+      padding-bottom: 1.2rem;
+    }
+
+    .professor-card .position::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, #f94144, #43aa8b);
+      border-radius: 1.5px;
+    }
+
+    .professor-card p {
+      font-size: 1.1rem;
+      color: #495057;
+      line-height: 1.7;
+      text-align: left;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* 研究生团队网格 */
+    .students-section {
+      margin-top: 3rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      color: #212529;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #f94144, #43aa8b);
+      border-radius: 1.5px;
+    }
+
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .student-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .student-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #43aa8b, #f8961e);
+    }
+
+    .student-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .student-image {
+      margin-bottom: 1.5rem;
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .student-card img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .student-image::before {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #ffffff;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 2px solid #e5e7eb;
+    }
+
+    /* 调整第二个和第三个学生图片的显示位置，让头部完整显示 */
+    .student-card:nth-child(2) img,
+    .student-card:nth-child(3) img {
+      object-position: center 20%; /* 向下调整图片位置，显示更多头部 */
+    }
+
+    .student-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .student-card h4 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #212529;
+      margin-bottom: 0.5rem;
+    }
+
+    .student-card .student-position {
+      font-size: 1rem;
+      color: #6c757d;
+      margin-bottom: 1rem;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .page-container {
+        padding: 20px 15px;
+      }
+
+      .team-overview {
+        padding: 2rem 1.5rem;
+      }
+
+      .team-overview h2 {
+        font-size: 1.8rem;
+      }
+
+      .professor-card {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .professor-card h3 {
+        font-size: 1.6rem;
+      }
+
+      .professor-image,
+      .professor-image::before {
+        width: 160px;
+        height: 160px;
+      }
+
+      .professor-card img {
+        width: 150px;
+        height: 150px;
+      }
+
+      .students-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      /* 移动端时取消学生图片的下移效果 */
+      .student-card:nth-child(2) .student-image,
+      .student-card:nth-child(3) .student-image {
+        margin-top: 1.5rem;
+      }
+    }
+
+    @media (max-width: 992px) and (min-width: 769px) {
+      .students-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  .nav-logo {
+  display: flex;
+  align-items: center;  /* 改为center以垂直居中 */
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.logo-image {
+  width: 50px;
+  height: auto;
+  margin-right: 10px; /* Space between the logo and text */
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main {
+  font-weight: bold;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.logo-subtitle {
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+  </style>
+</head>
+<nav class="nav-container">
+  <div class="nav-content">
+    <a href="#" class="nav-logo">
+      <img src="/static/img/logo_phone.svg" alt="MolMod Logo"  style="width: 65px; height: auto; margin-right: 10px;"> 
+      <div class="logo-text">
+        <span class="logo-main">MolMod</span>
+        <span class="logo-subtitle">SITE-DIRECTED MOLECULAR OPTIMIZATION</span>
+      </div>
+    </a>
+    <div class="nav-right">
+      <a href="/" class="nav-link">Home</a>
+	<a href="/about" class="nav-link">About</a>
+	<a href="/help" class="nav-link">Help</a>
+	<a href="/contact" class="nav-link">Contact</a>
+    </div>
+  </div>
+</nav>
+<body>
+
+  <div class="page-container">
+    <!-- Team Introduction -->
+    <section class="team-overview">
+      <h2>AIDD Drug Discovery and Innovation Team</h2>
+      <p>Our team focuses on computer-aided drug design, computational chemistry, and bioinformatics research, dedicated to applying artificial intelligence and theoretical simulation technologies to new drug screening and molecular recognition mechanism research.</p>
+    </section>
+
+    <!-- Professor Introduction -->
+    <section class="professor-section">
+      <div class="professor-card">
+        <div class="professor-image">
+          <img src="../static/img/huan.jpg" alt="Associate Professor Huang Shuheng">
+        </div>
+        <h3>Associate Professor Huang Shuheng</h3>
+        <div class="position">Computer-Aided Drug Design Expert</div>
+        <p>Her main research areas include computer-aided drug design, computational chemistry, and bioinformatics. She focuses on the application of artificial intelligence and theoretical simulation in new drug screening and molecular recognition mechanisms. She has published more than 30 SCI papers, presided over multiple national and provincial-level projects, and serves as a reviewer for multiple journals and as a young editorial board member of the Journal of Hainan University. She has extensive research experience and profound academic achievements in drug molecular design and computational chemistry.</p>
+      </div>
+    </section>
+
+    <!-- Graduate Student Team -->
+    <section class="students-section">
+      <h2 class="section-title">Graduate Student Team</h2>
+      <div class="students-grid">
+        <div class="student-card">
+          <div class="student-image">
+            <img src="../static/img/zhou.png" alt="Zhou">
+          </div>
+          <h4>Zhouyao</h4>
+          <div class="student-position">Graduate Student, School of Pharmacy, Hainan University</div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-image">
+            <img src="../static/img/cao.png" alt="Cao">
+          </div>
+          <h4>Caoze</h4>
+          <div class="student-position">Graduate Student, School of Pharmacy, Hainan University</div>
+        </div>
+
+        <div class="student-card">
+          <div class="student-image">
+            <img src="../static/img/xiao.png" alt="Xiao">
+          </div>
+          <h4>Xiaokaixiang</h4>
+          <div class="student-position">Graduate Student, School of Pharmacy, Hainan University</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

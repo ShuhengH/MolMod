@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MolMod</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo_phone.svg">
+
+    <link rel="apple-touch-icon" href="/static/img/logo_phone.svg">
+
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/img/logo_phone.svg">
+    <link rel="icon" type="image/png" sizes="512x512" href="/static/img/logo_phone.svg">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/img/logo_phone.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/img/logo_phone.svg">
+
+<link rel="manifest" href="/static/img/site.webmanifest">
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="/static/js/swiper-bundle.min.js"></script>
+    <script src="/static/js/jquery-3.6.4.min.js"></script>
+    <script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<style>
+  .property-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.property-name {
+  width: 60px;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.property-value {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.properties-section .section {
+  display: table;
+  width: 100%;
+}
+
+.property-item {
+  display: table-row;
+}
+
+.property-name {
+  display: table-cell;
+  padding-right: 10px;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.property-value {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.color-indicator-cell {
+  display: table-cell;
+  width: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.color-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.color-indicator.green {
+  background-color:rgba(25, 135, 84) ;
+}
+
+.color-indicator.yellow {
+  background-color:#ffc107;
+}
+
+.color-indicator.red {
+  background-color: #dc3545;
+}
+.info-icon-cell {
+    display: table-cell;
+    width: 30px;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 5px;
+  }
+
+  .info-icon {
+    color: #6c757d;
+    cursor: help;
+    font-size: 14px;
+  }
+
+  .info-icon:hover {
+    color: #495057;
+  }
+
+  .tippy-box {
+    background-color: #343a40;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+.results-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.download-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.download-button:hover {
+  background-color: #218838;
+}
+
+.filter-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.filter-button:hover {
+  background-color: #138496;
+}
+
+.filter-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.filter-dialog-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.filter-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.close-button:hover {
+  color: #343a40;
+}
+
+.filter-body {
+  padding: 20px;
+}
+
+.filter-item {
+  margin-bottom: 20px;
+}
+
+.filter-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.filter-item select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.range-inputs {
+  display: flex;
+  gap: 15px;
+}
+
+.range-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.range-input span {
+  width: 40px;
+  margin-right: 5px;
+}
+
+.range-input input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 100px;
+}
+
+.filter-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.apply-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #0069d9;
+}
+
+.reset-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #5a6268;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.page-button {
+  padding: 6px 12px;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-button:hover:not(:disabled) {
+  background-color: #e9ecef;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-indicators {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 8px;
+}
+
+.page-number {
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.page-number.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.page-ellipsis {
+  padding: 0 5px;
+}
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  gap: 8px;
+}
+
+.page-size-selector label {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.page-size-select {
+  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.page-size-select:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.action-buttons-group {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.remove-filter-button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.remove-filter-button:hover {
+  color: #bd2130;
+}
+
+.add-more-filters {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #dee2e6;
+}
+
+.add-filter-button {
+  width: 100%;
+  background-color: #f8f9fa;
+  border: 1px dashed #ced4da;
+  border-radius: 4px;
+  padding: 10px;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.add-filter-button:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.more-filters-options {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 5px;
+}
+
+.filter-options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-option {
+  background-color: #e9ecef;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-option:hover {
+  background-color: #dee2e6;
+}
+
+.close-more-filters {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 0;
+}
+
+.close-more-filters:hover {
+  color: #495057;
+}
+
+.no-filters-message {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.filter-item {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 576px) {
+  .range-inputs {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filter-options-list {
+    justify-content: center;
+  }
+}
+
+.copy-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  color: #333;
+}
+
+.copy-button:hover {
+  background-color: #e0e0e0;
+}
+
+.copy-button:active {
+  background-color: #d0d0d0;
+}
+
+.copy-button i {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.copy-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+.copy-button.copied {
+  background-color: #28a745;
+  color: white;
+}
+.section-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.smiles-value {
+  font-family: monospace;
+  word-break: break-all;
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.copy-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.enlarged-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.molecule-image img {
+  transition: transform 0.2s ease;
+}
+
+.molecule-image img:hover {
+  transform: scale(1.05);
+}
+.nav-link i {
+  margin-right: 5px;
+}
+.mode-switch .el-radio-group {
+  font-size: 16px;
+}
+
+.mode-switch .el-radio-button__inner {
+  padding: 10px 20px;
+  height: auto;
+  line-height: 1.5;
+}
+
+.mode-switch .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+  box-shadow: -1px 0 0 0 #4f46e5;
+}
+
+.mode-switch .el-radio-button__inner:hover {
+  color: #4f46e5;
+}
+
+.mode-switch .el-radio-button__inner {
+  font-weight: 500;
+}
+.mode-switch .el-radio-button:not(:first-child) .el-radio-button__inner {
+  margin-left: -1px;
+}
+
+.mode-switch .el-radio-button:not(:last-child) .el-radio-button__inner {
+  border-right-color: transparent;
+}
+
+.mode-switch .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  z-index: 1;
+}
+.filter-alert-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.filter-error {
+  color: #ff4949;
+  margin-right: 10px;
+}
+
+.reset-filters-btn {
+  background-color: #409EFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.reset-filters-btn:hover {
+  background-color: #66b1ff;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.logo-image {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main {
+  font-weight: bold;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.logo-subtitle {
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  #app {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0.75rem 0;
+  }
+  
+  .nav-content {
+    flex-direction: column;
+    padding: 0 1rem;
+    gap: 0.75rem;
+  }
+  
+  .nav-logo {
+    margin-left: 0;
+    font-size: 1.25rem;
+  }
+  
+  .nav-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+  }
+  
+  .nav-link {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .nav-link i {
+    margin-right: 3px;
+    font-size: 0.875rem;
+  }
+  
+  
+}
+
+@media (max-width: 768px) {
+  .drawingContainer {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10rem;
+    gap: 1rem;
+  }
+  
+  .ketcher-container {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .arrow-box {
+    transform: rotate(90deg);
+    margin: 0.5rem 0;
+  }
+  
+  .smiles-input-container {
+    width: 100%;
+    height: auto;
+  }
+  
+  .text-val .el-textarea__inner {
+    height: 200px !important;
+    min-height: 200px !important;
+  }
+  
+  .run-btn-box {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .btn, .btn-disabled {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    flex: 1;
+    min-width: 80px;
+    margin: 5px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .module {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .module-title {
+    font-size: 1.1rem;
+  }
+  
+  .parameter-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .parameter-label {
+    margin-bottom: 0.5rem;
+    width: 100%;
+  }
+  
+  select, input[type="text"], input[type="number"] {
+    width: 100% !important;
+    max-width: 100%;
+  }
+  
+  .mode-switch .el-radio-group {
+    width: 100%;
+    display: flex;
+  }
+  
+  .mode-switch .el-radio-button {
+    flex: 1;
+  }
+  
+  .mode-switch .el-radio-button__inner {
+    padding: 8px 5px;
+    font-size: 0.875rem;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-dialog-content {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .filter-header h3 {
+    font-size: 1rem;
+  }
+  
+  .filter-body {
+    padding: 15px;
+  }
+  
+  .range-inputs {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .range-input {
+    width: 100%;
+  }
+  
+  .filter-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .apply-button, .reset-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .results-title {
+    font-size: 1.1rem;
+    margin-top: 2rem;
+  }
+  
+  .results-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .page-size-selector {
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0;
+  }
+  
+  .action-buttons-group {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .molecule-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .smiles-section, .properties-section {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .molecule-images {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .molecule-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  
+  .property-item {
+    grid-template-columns: 120px 1fr;
+    gap: 10px;
+  }
+  
+  .property-value {
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .page-button {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+  }
+  
+  .page-indicators {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  
+  .page-number {
+    min-width: 30px;
+    height: 30px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-bar {
+    padding: 2rem 0;
+  }
+  
+  .footer-box {
+    flex-direction: column;
+    padding: 0 1rem;
+    gap: 2rem;
+  }
+  
+  .footer-item {
+    width: 100%;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .footer-item:first-child {
+    text-align: center;
+  }
+  
+  .footer-item:first-child .footer-item-label {
+    text-align: center;
+  }
+  
+  .footer-item-title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  .footer-item-way {
+    justify-content: center;
+  }
+  
+  .map {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-close-button {
+    top: -30px;
+    right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  button, 
+  .nav-link, 
+  select, 
+  input[type="checkbox"] + .slider,
+  .page-number,
+  .copy-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .switch {
+    width: 50px;
+    height: 28px;
+  }
+  
+  .slider:before {
+    height: 20px;
+    width: 20px;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #4f46e5;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4f46e5;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.generation-count-display {
+  background-color: #f3f4f6;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #4f46e5;
+  min-width: 60px;
+  text-align: center;
+}
+</style>
+<body class="bg-gray-100">
+  <nav class="nav-container">
+    <div class="nav-content">
+      <a href="#" class="nav-logo">
+        <img src="/static/img/logo_phone.svg" alt="MolMod Logo"  style="width: 65px; height: auto; margin-right: 10px;"> 
+        <div class="logo-text">
+          <span class="logo-main">MolMod</span>
+          <span class="logo-subtitle">SITE-DIRECTED MOLECULAR OPTIMIZATION</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        <a href="/about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        <a href="/help" class="nav-link"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="/contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="app" class="max-w-4xl mx-auto p-6">
+  
+        <div class="functuion-bg">
+          <section>
+            <div id="drawingContainer" class="drawingContainer container-block">
+              <div class="ketcher-container">
+                <iframe
+                  id="katcher"
+                  src="./ketcher/index.html"
+                  style="width: 100%; height: 100%;"
+                ></iframe>
+              </div>
+        
+              <div class="arrow-box">
+                <i @click="setAndStandardizeSmiles" class="fas fa-arrow-circle-right" 
+                   style="display: block; font-size: 40px; color: #4f46e5; cursor: pointer;"></i>
+              </div>
+        
+          <div class="smiles-input-container">
+                <div class="smiles-box">
+              Input SMILES:
+                </div>
+            <el-input 
+                class="text-val"
+              type="textarea" 
+              v-model="textVal" 
+              placeholder="SMILES List"
+              :autosize="false"
+              :rows="16"
+              resize="none"
+              @focus="adjustTextareaHeight"
+              ref="textareaInput">
+            </el-input>
+                <div class="run-btn-box">
+              <button class="btn" @click="textVal=defaultvalue">Example</button>
+              <button class="btn" @click="textVal=''">Clear </button>
+              <button class="btn" @click="ConfirmVal" v-if="textVal!=''">Confirm</button>
+              <button class="btn-disabled" v-else>Confirm</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+  
+        <form action="/generate_json" method="post" enctype="multipart/form-data">
+          <div class="module">
+            <h3 class="module-title">SMILES</h3>
+            <div class="flex items-center space-x-2">
+              <div class="flex-1">
+                <input type="text" id="smilesInput" name="smiles" placeholder="Input SMILES..." class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <button type="button" class="bg-gray-300 text-gray-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-400 transition" onclick="setExampleSMILES()">Example</button>
+            </div>
+            
+            <div class="parameter-item" style="margin-top: 15px;">
+              <div class="parameter-label">Number of molecules to generate:</div>
+              <div class="flex items-center space-x-3">
+                <input type="range" 
+                       id="generationCount" 
+                       name="generation_count" 
+                       value="20"
+                       min="20" 
+                       max="100" 
+                       step="10"
+                       class="flex-1"
+                       oninput="document.getElementById('countDisplay').textContent = this.value">
+                <span id="countDisplay" class="text-lg font-semibold bg-gray-100 px-3 py-1 rounded">20</span>
+              </div>
+              <div class="text-sm text-gray-500 mt-1">
+                <span v-if="generationCount <= 50">
+                  <i class="fas fa-info-circle"></i> Will generate 100 molecules and select the best ${ generationCount }
+                </span>
+                <span v-else>
+                  <i class="fas fa-info-circle"></i> Will generate ${ generationCount } molecules
+                </span>
+              </div>
+            </div>
+          </div>
+        
+          <div class="module">
+            <h3 class="module-title">Optimization Parameters</h3>
+        
+            <div class="mode-switch">
+              <el-radio-group v-model="optimizationMode" size="medium">
+                <el-radio-button label="single">Single Property</el-radio-button>
+                <el-radio-button label="multi">Multi Property</el-radio-button>
+              </el-radio-group>
+            </div>
+        
+            <div v-show="optimizationMode === 'single'" class="parameter-selection">
+              <div class="parameter-item">
+                <div class="parameter-label">Select Parameter:</div>
+                <select id="parameter-type" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" v-model="selectedParameter">
+                  <option value="logP">logP</option>
+                  <option value="logS">logS</option>
+                  <option value="BBB">BBB</option>
+                  <option value="LD50">LD50</option>
+                </select>
+              </div>
+            </div>
+        
+            <div v-show="optimizationMode === 'multi'" class="parameter-selection">
+              <div class="parameter-item">
+                <div class="parameter-label">Multi-parameter selection:</div>
+                <select id="multi-parameter-option" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" v-model="multiParameterOption">
+                  <option value="logP_LD50">LogP and LD50 </option>
+                  <option value="logP_logS">LogP and LogS</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        
+          <div class="module">
+            <h3 class="module-title">Advanced Options</h3>
+            <div class="parameter-item">
+              <div class="parameter-label">Whether to enable advanced structure requirements</div>
+              <label class="switch">
+                <input type="checkbox" id="advancedToggle">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div id="advancedWarning" class="tips-box" style="display: none;">
+              <span class="tips-icon">i</span>
+              <span>Tips: Structure constraints will affect the fragment optimization structure, please select normal optimization if there are no special requirements.</span>
+            </div>
+            <div id="advancedContent" class="advanced-content">
+              <div class="parameter-selection">
+                <div class="parameter-item">
+                  <div class="parameter-label">Whether to include rings</div>
+                  <select id="ringsOption" name="rings_option" v-model="ringsOption" :disabled="!advancedOptionsEnabled" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div class="parameter-item">
+                  <div class="parameter-label">Number of benzene rings</div>
+                  <input type="number" id="benzeneCount" name="benzene_count" v-model="benzeneCount" min="0" :disabled="!advancedOptionsEnabled" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="parameter-item">
+                  <div class="parameter-label">Number of heterocyclic rings</div>
+                  <input type="number" id="heteroCount" name="hetero_count" v-model="heteroCount" min="0" :disabled="!advancedOptionsEnabled" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="parameter-item">
+                  <div class="parameter-label">Number of N atoms</div>
+                  <input type="number" id="nCount" name="n_count" v-model="nCount" min="0" :disabled="!advancedOptionsEnabled" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="parameter-item">
+                  <div class="parameter-label">Number of O atoms</div>
+                  <input type="number" id="oCount" name="o_count" v-model="oCount" min="0" :disabled="!advancedOptionsEnabled" class="w-64 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <input type="hidden" name="optimization_type" :value="advancedOptionsEnabled ? 'str_and_admet' : 'only_admet'">
+          <input type="hidden" name="optimization_mode" :value="optimizationMode">
+          <input type="hidden" name="selected_parameter" :value="optimizationMode === 'single' ? selectedParameter : multiParameterOption">
+          
+        
+          <div class="text-center mt-6">
+            <button type="button" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition" @click="submitForm">
+              Submit
+            </button>
+          </div>
+        </form>
+
+
+<div v-if="isLoading" class="loading-indicator">
+  <div class="spinner"></div>
+  <div class="loading-text">Generating molecular optimization results, please wait...</div>
+</div>
+
+<div v-if="error" class="error-message">
+  ${error}
+</div>
+
+  <div v-if="hasResults" >
+    <h3 class="results-title">Molecular Optimization Results</h3>
+    <div style="border-bottom: 1px solid #e0e0e0; margin-bottom: 10px;"></div>
+    <div class="results-actions">
+      <div class="page-size-selector">
+        <label for="page-size">Show:</label>
+        <select id="page-size" v-model="itemsPerPage" @change="handlePageSizeChange" class="page-size-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="action-buttons-group">
+        <button @click="downloadResults" class="action-button download-button">
+          <i class="fas fa-download"></i> Download Results
+        </button>
+        <button @click="prepareFilterDialog()" class="action-button filter-button">
+          <i class="fas fa-filter"></i> Filter Results
+        </button>
+      </div>
+    </div>
+  </div>
+  
+<div v-if="showFilterDialog" class="filter-dialog">
+  <div class="filter-dialog-content">
+    <div class="filter-header">
+      <h3>Filter Results</h3>
+      <button @click="showFilterDialog = false" class="close-button">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="filter-body">
+      
+      <div v-if="filters.logP.enabled" class="filter-item">
+        <div class="filter-item-header">
+          <label>LogP Range:</label>
+          <button @click="removeFilter('logP')" class="remove-filter-button">
+            <i class="fas fa-times-circle"></i>
+          </button>
+        </div>
+        <div class="range-inputs">
+          <div class="range-input">
+            <span>Min:</span>
+            <input type="number" v-model.number="filters.logP.min" step="0.1">
+          </div>
+          <div class="range-input">
+            <span>Max:</span>
+            <input type="number" v-model.number="filters.logP.max" step="0.1">
+          </div>
+        </div>
+      </div>
+      
+      <div v-if="filters.logS.enabled" class="filter-item">
+        <div class="filter-item-header">
+          <label>LogS Range:</label>
+          <button @click="removeFilter('logS')" class="remove-filter-button">
+            <i class="fas fa-times-circle"></i>
+          </button>
+        </div>
+        <div class="range-inputs">
+          <div class="range-input">
+            <span>Min:</span>
+            <input type="number" v-model.number="filters.logS.min" step="0.1">
+          </div>
+          <div class="range-input">
+            <span>Max:</span>
+            <input type="number" v-model.number="filters.logS.max" step="0.1">
+          </div>
+        </div>
+      </div>
+      
+      <div v-if="filters.bbb.enabled" class="filter-item">
+        <div class="filter-item-header">
+          <label>BBB Penetration:</label>
+          <button @click="removeFilter('bbb')" class="remove-filter-button">
+            <i class="fas fa-times-circle"></i>
+          </button>
+        </div>
+        <select v-model="filters.bbb.value">
+          <option value="all">All</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      
+      <div v-if="filters.ld50.enabled" class="filter-item">
+        <div class="filter-item-header">
+          <label>LD50 Range:</label>
+          <button @click="removeFilter('ld50')" class="remove-filter-button">
+            <i class="fas fa-times-circle"></i>
+          </button>
+        </div>
+        <div class="range-inputs">
+          <div class="range-input">
+            <span>Min:</span>
+            <input type="number" v-model.number="filters.ld50.min" step="1">
+          </div>
+          <div class="range-input">
+            <span>Max:</span>
+            <input type="number" v-model.number="filters.ld50.max" step="1">
+          </div>
+        </div>
+      </div>
+      
+      <div class="add-more-filters">
+        <button v-if="!showMoreFilters" @click="showMoreFilters = true" class="add-filter-button">
+          <i class="fas fa-plus-circle"></i> Add more filter criteria
+        </button>
+        
+        <div v-if="showMoreFilters" class="more-filters-options">
+          <div class="filter-options-list">
+            <button v-if="!filters.logP.enabled" @click="addFilter('logP')" class="filter-option">
+              LogP
+            </button>
+            <button v-if="!filters.logS.enabled" @click="addFilter('logS')" class="filter-option">
+              LogS
+            </button>
+            <button v-if="!filters.bbb.enabled" @click="addFilter('bbb')" class="filter-option">
+              BBB
+            </button>
+            <button v-if="!filters.ld50.enabled" @click="addFilter('ld50')" class="filter-option">
+              LD50
+            </button>
+          </div>
+          <button @click="showMoreFilters = false" class="close-more-filters">
+            <i class="fas fa-chevron-up"></i> Close
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-footer">
+      <button @click="applyFilters" class="apply-button">Apply Filters</button>
+      <button @click="resetFilters" class="reset-button">Reset</button>
+    </div>
+  </div>
+</div>
+<div v-if="hasResults" id="results-container" class="results-container">
+  
+<div class="filter-alert-container">
+  <span v-if="filterErrorMessage" class="filter-error">${ filterErrorMessage }</span>
+  <button v-if="filterErrorMessage" class="reset-filters-btn" @click="resetFilters">
+    Reset Filters
+  </button>
+</div>
+ 
+  <div class="results-header">
+    
+  </div>
+  <div class="molecule-cards">
+    <div v-for="(mol, index) in paginatedMolecules" :key="index" class="molecule-card">
+      <div class="molecule-content">
+        <div class="smiles-section">
+          <div class="section-header">
+            <span class="section-title">SMILES</span>
+            <button @click="copySmiles(mol.SMILES, index)" 
+                    :class="['copy-button', copyStatus[index] ? 'copied' : '']">
+              <i class="fas fa-copy"></i> ${ copyStatus[index] ? 'copied!' : 'Copy' }
+            </button>
+          </div>
+          <div class="section">
+            <div class="molecule-images">
+              <div class="molecule-image">
+                <img :src="mol.molecule_image_path" alt="Molecular Structure" 
+                     style="max-width: 100%; height: auto; cursor: pointer;" 
+                     @click="enlargeImage(mol.molecule_image_path)">
+              </div>
+              <div class="molecule-image">
+                <img :src="mol.radar_image_path" alt="Molecular Radar" 
+                     style="max-width: 100%; height: auto; cursor: pointer;" 
+                     @click="enlargeImage(mol.radar_image_path)">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="properties-section">
+          <div class="section-title">Physical Properties</div>
+          <div class="section">
+            <div class="property-item">
+              <span class="property-name">Molecular Weight</span>
+              <span class="property-value">${mol.mol_weight}</span>
+              <span class="color-indicator-cell"></span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Molecular weight, ideal drug range is typically 100-600"></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">TPSA</span>
+              <span class="property-value">${mol.tpsa}</span>
+              <span class="color-indicator-cell"></span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Topological Polar Surface Area.Optimal:0~140"></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">H Acceptors</span>
+              <span class="property-value">${mol.h_acceptors}</span>
+              <span class="color-indicator-cell"></span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Number of hydrogen bond acceptors, Lipinski's rule suggests no more than 10"></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">H Donors</span>
+              <span class="property-value">${mol.h_donors}</span>
+              <span class="color-indicator-cell"></span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Number of hydrogen bond donors, Lipinski's rule suggests no more than 5"></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">Rotatable Bonds</span>
+                <span class="property-value">${mol.rot_bonds}</span>
+              <span class="color-indicator-cell"></span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Number of rotatable bonds, Lipinski's rule suggests no more than 4"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="druglikeness-section">
+          <div class="section-title">ADMET Properties</div>
+          <div class="section">
+            <div class="property-item">
+              <span class="property-name">LogP</span>
+              <span class="property-value">${mol.logp}</span>
+              <span class="color-indicator-cell">
+                <span class="color-indicator" :class="getLogPColorClass(mol.logp)" data-property="LogP"></span>
+              </span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="The logarithm of the n-octanol/water distribution coefficients."></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">LogS</span>
+              <span class="property-value">${mol.logs}</span>
+              <span class="color-indicator-cell">
+                <span class="color-indicator" :class="getLogSColorClass(mol.logs)" data-property="LogS"></span>
+              </span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="The logarithm of aqueous solubility value."></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">BBB</span>
+              <span class="property-value">${mol.bbb}</span>
+              <span class="color-indicator-cell">
+                <span class="color-indicator" :class="getBBBColorClass(mol.bbb)" data-property="BBB"></span>
+              </span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="Blood-Brain Barrier Penetration"></i>
+              </span>
+            </div>
+            <div class="property-item">
+              <span class="property-name">LD50</span>
+              <span class="property-value">${mol.ld50}</span>
+              <span class="color-indicator-cell">
+              </span>
+              <span class="info-icon-cell">
+                <i class="fas fa-info-circle info-icon" data-tippy-content="LD50 is the median lethal dose, with higher values indicating lower toxicity."></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div v-if="totalPages > 1" class="pagination">
+  <button 
+    @click="changePage(1)" 
+    :disabled="currentPage === 1" 
+    class="page-button first-page"
+  >
+    <i class="fas fa-angle-double-left"></i>
+  </button>
+  <button 
+    @click="changePage(currentPage - 1)" 
+    :disabled="currentPage === 1" 
+    class="page-button prev-page"
+  >
+    <i class="fas fa-angle-left"></i>
+  </button>
+  
+  <div class="page-indicators">
+    <template v-for="page in pageIndicators">
+      <span 
+        v-if="page === '...'" 
+        class="page-ellipsis"
+      >...</span>
+      <button 
+        v-else
+        @click="changePage(page)" 
+        :class="['page-number', currentPage === page ? 'active' : '']"
+      >
+        ${page}
+      </button>
+    </template>
+  </div>
+  
+  <button 
+    @click="changePage(currentPage + 1)" 
+    :disabled="currentPage === totalPages" 
+    class="page-button next-page"
+  >
+    <i class="fas fa-angle-right"></i>
+  </button>
+  <button 
+    @click="changePage(totalPages)" 
+    :disabled="currentPage === totalPages" 
+    class="page-button last-page"
+  >
+    <i class="fas fa-angle-double-right"></i>
+  </button>
+</div>
+</div>
+<div v-if="showImageModal" class="image-modal">
+  <div class="image-modal-content">
+    <button @click="showImageModal = false" class="modal-close-button">
+      <i class="fas fa-times"></i>
+    </button>
+    <img :src="enlargedImageSrc" alt="放大图片" class="enlarged-image">
+  </div>
+</div>
+</div>
+
+
+<footer class="footer-bar">
+  <div class="footer-box">
+    <div class="footer-item">
+      <div class="footer-item-title">Supported</div>
+      <div class="footer-items-container">
+        <div class="footer-item-label">python</div>
+        <div class="footer-item-label">pytorch</div>
+        <div class="footer-item-label">RDKIT</div>
+      </div>
+    </div>
+    <div class="footer-item main-center">
+      <div class="footer-item-title">Visitors</div>
+      <img class="map" src="/static/img/map_01.png" alt="">
+    </div>
+    <div class="footer-item">
+      <div class="footer-item-title">Contact us</div>
+      <div class="footer-item-way">
+        <img src="/static/img/img_04.png" alt="">
+        <span>No. 58 Renmin Avenue, Meilan District,<br>
+          Haikou City, Hainan Province</span>
+      </div>
+      <div class="footer-item-way">
+        <img src="/static/img/img_03.png" alt="">
+        <span>0898-66254967</span>
+      </div>
+      <div class="footer-item-way">
+        <img src="/static/img/img_02.png" alt="">
+        <span>shhuang@hainanu.edu.cn</span>
+      </div>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/static/js/main.js"></script>
+
+
+
+</body>
+
+</html>

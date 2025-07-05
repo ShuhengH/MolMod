@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/styles.css">
+
+<!-- 标准网站图标 -->
+<link rel="icon" type="image/svg+xml" href="/static/img/logo_phone.svg">
+
+<!-- 苹果iOS设备图标 -->
+<link rel="apple-touch-icon" href="/static/img/logo_phone.svg">
+
+<!-- 安卓Chrome浏览器图标 -->
+<link rel="icon" type="image/png" sizes="192x192" href="/static/img/logo_phone.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="/static/img/logo_phone.svg">
+
+<!-- 小尺寸图标 -->
+<link rel="icon" type="image/png" sizes="16x16" href="/static/img/logo_phone.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/img/logo_phone.svg">
+
+<!-- 网站应用清单 -->
+<link rel="manifest" href="/static/img/site.webmanifest">
+  <title>MolMod Tutorial</title>
+  <style>
+    /* Base reset styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f8f8f8;
+    }
+
+    /* Main content area */
+    .main-content {
+      padding: 40px 20px;
+    }
+
+    .header-section {
+      background: linear-gradient(135deg, #242A2F 0%, #1a1f24 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      margin-bottom: 60px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      margin-top: 3rem;
+    }
+
+    .header-section h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #ffffff, #e0e6ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-section p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Steps container */
+    .steps-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 0 20px;
+    }
+
+    .step {
+      background: white;
+      border-radius: 16px;
+      padding: 45px 35px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid #e5e7eb;
+    }
+
+    .step:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+      border-color: #5558DB;
+    }
+
+    .step h2 {
+      color: #242A2F;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-number {
+      background: linear-gradient(45deg, #5558DB, #7c3aed);
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .step p {
+      color: #374151;
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .step-image {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .step-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .step:hover .step-image {
+      border-color: #5558DB;
+    }
+
+    .step:hover .step-image img {
+      transform: scale(1.05);
+    }
+
+    /* Fallback for missing images */
+    .step-image-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 14px;
+      border: 2px dashed #d1d5db;
+      transition: all 0.3s ease;
+    }
+
+    .step:hover .step-image-placeholder {
+      background: linear-gradient(45deg, #ede9fe, #ddd6fe);
+      border-color: #a78bfa;
+      color: #7c3aed;
+    }
+
+    /* Navigation styles */
+    .nav-container {
+      background-color: #242A2F;
+      padding: 1rem 0;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .logo-image {
+      width: 50px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-main {
+      font-weight: bold;
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+
+    .logo-subtitle {
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .nav-link i {
+      margin-right: 5px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header-section {
+        padding: 40px 20px;
+      }
+      
+      .header-section h1 {
+        font-size: 1.8rem;
+      }
+      
+      .header-section p {
+        font-size: 1rem;
+      }
+      
+      .steps-container {
+        gap: 30px;
+      }
+      
+      .step {
+        padding: 30px 20px;
+      }
+    }
+
+    /* Animation effects */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .step:nth-child(1) { animation-delay: 0.1s; }
+    .step:nth-child(2) { animation-delay: 0.2s; }
+    .step:nth-child(3) { animation-delay: 0.3s; }
+  </style>
+</head>
+
+<body>
+  <nav class="nav-container">
+    <div class="nav-content">
+      <a href="/" class="nav-logo">
+        <img src="/static/img/logo_phone.svg" alt="MolMod Logo" style="width: 65px; height: auto; margin-right: 10px;"> 
+        <div class="logo-text">
+          <span class="logo-main">MolMod</span>
+          <span class="logo-subtitle">SITE-DIRECTED MOLECULAR OPTIMIZATION</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        <a href="/about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        <a href="/help" class="nav-link"><i class="fas fa-question-circle"></i> Help</a>
+        <a href="/contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main content -->
+  <main class="main-content">
+    <!-- Header section -->
+    <div class="header-section">
+      <h1>MolMod User Guide</h1>
+      <p>Step-by-step instructions for site-directed molecular optimization</p>
+    </div>
+
+    <!-- Steps section -->
+    <div class="steps-container">
+      <div class="step">
+        <h2>
+          <span class="step-number">1</span>
+          Input SMILES
+        </h2>
+        <p>Draw or paste molecular structure, use [A] to mark replaceable parts. The system will automatically generate the corresponding SMILES string.</p>
+        <div class="step-image">
+          <img src="/static/img/1.png" alt="SMILES input interface" onerror="this.parentElement.innerHTML='<div class=\'step-image-placeholder\'>Image: SMILES Input Interface</div>'">
+        </div>
+      </div>
+
+      <div class="step">
+        <h2>
+          <span class="step-number">2</span>
+          Select Optimization Parameters
+        </h2>
+        <p>Choose target properties to optimize, such as logP values or multi-property mode. Optionally enable structural constraints.</p>
+        <div class="step-image">
+          <img src="/static/img/2.png" alt="Parameter selection interface" onerror="this.parentElement.innerHTML='<div class=\'step-image-placeholder\'>Image: Parameter Selection Interface</div>'">
+        </div>
+      </div>
+
+      <div class="step">
+        <h2>
+          <span class="step-number">3</span>
+          View and Filter Results
+        </h2>
+        <p>After submission, view generated molecules, analyze ADMET and physicochemical properties, and download result data.</p>
+        <div class="step-image">
+          <img src="/static/img/3.png" alt="Results display interface" onerror="this.parentElement.innerHTML='<div class=\'step-image-placeholder\'>Image: Results Display Interface</div>'">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Font Awesome for icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</body>
+</html>
