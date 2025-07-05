@@ -1,0 +1,17 @@
+torch>=1.11.0
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.0.0
+h5py>=3.11.0
+rdkit>=2024.3.0
+molsets>=0.3.1  # moses
+tqdm>=4.66.0
+
+dgl>=0.9.1
+dgllife>=0.3.2
+PyTDC>=0.4.1
+
+fastapi>=0.111.0
+uvicorn>=0.33.0
+jinja2>=3.1.0
+python-multipart>=0.0.20
